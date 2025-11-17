@@ -1,5 +1,8 @@
 # Technical Architecture - User Stories AI MVP
 
+> **MVP Scope**: Client-side only, no database, no authentication
+> See `future-enhancements.md` for post-MVP features
+
 ## Tech Stack
 
 ### Frontend
@@ -9,13 +12,13 @@
 - **Component Library**: shadcn/ui
 - **Icons**: Lucide React
 - **Form Handling**: React Hook Form + Zod validation
-- **State Management**: React Context + hooks (for MVP simplicity)
+- **State Management**: React useState/useReducer (component-level only)
 
 ### Backend
 - **API**: Next.js API Routes (serverless functions)
-- **AI Integration**: OpenAI API (GPT-4 or GPT-3.5-turbo)
-- **Database**: Vercel Postgres or Supabase (for storing generated stories)
-- **Authentication**: NextAuth.js (optional for MVP, can start without auth)
+- **AI Integration**: OpenAI API (GPT-3.5-turbo for cost efficiency)
+- **Database**: ❌ None (MVP)
+- **Authentication**: ❌ None (MVP)
 
 ### Deployment
 - **Platform**: Vercel
@@ -24,60 +27,75 @@
 
 ---
 
-## System Architecture
+## System Architecture (Simplified MVP)
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                         Client (Browser)                     │
+│                    Client (Browser)                          │
 │  ┌────────────────────────────────────────────────────────┐ │
 │  │           Next.js App (React Components)               │ │
-│  │  - Story Generator Form                                │ │
-│  │  - Story Display/Editor                                │ │
-│  │  - Export/Copy Functionality                           │ │
+│  │                                                        │ │
+│  │  ┌──────────────────────────────────────────────────┐ │ │
+│  │  │  Story Generator Form                            │ │ │
+│  │  │  - User input textarea                           │ │ │
+│  │  │  - Optional fields (role, context)               │ │ │
+│  │  │  - Criteria format selector                      │ │ │
+│  │  └──────────────────────────────────────────────────┘ │ │
+│  │                                                        │ │
+│  │  ┌──────────────────────────────────────────────────┐ │ │
+│  │  │  Story Display                                   │ │ │
+│  │  │  - Formatted user story                          │ │ │
+│  │  │  - Acceptance criteria                           │ │ │
+│  │  │  - INVEST badges                                 │ │ │
+│  │  └──────────────────────────────────────────────────┘ │ │
+│  │                                                        │ │
+│  │  ┌──────────────────────────────────────────────────┐ │ │
+│  │  │  Export Actions                                  │ │ │
+│  │  │  - Copy to clipboard                             │ │ │
+│  │  │  - Download as .md                               │ │ │
+│  │  └──────────────────────────────────────────────────┘ │ │
+│  │                                                        │ │
 │  └────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────┘
                               │
-                              │ HTTP/HTTPS
+                              │ HTTPS POST
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                    Next.js API Routes (Vercel)               │
+│              Next.js API Route (Vercel Serverless)           │
 │  ┌────────────────────────────────────────────────────────┐ │
-│  │  /api/generate-story                                   │ │
-│  │  - Validates input                                     │ │
-│  │  - Constructs AI prompt                                │ │
-│  │  - Calls OpenAI API                                    │ │
-│  │  - Returns formatted story                             │ │
-│  └────────────────────────────────────────────────────────┘ │
-│  ┌────────────────────────────────────────────────────────┐ │
-│  │  /api/save-story (optional)                            │ │
-│  │  - Saves story to database                             │ │
+│  │  POST /api/generate-story                              │ │
+│  │                                                        │ │
+│  │  1. Validate request (Zod schema)                     │ │
+│  │  2. Construct AI prompt from template                 │ │
+│  │  3. Call OpenAI API                                   │ │
+│  │  4. Parse and format response                         │ │
+│  │  5. Return JSON story object                          │ │
+│  │                                                        │ │
 │  └────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────┘
                               │
-                    ┌─────────┴─────────┐
-                    │                   │
-                    ▼                   ▼
-        ┌──────────────────┐  ┌──────────────────┐
-        │   OpenAI API     │  │  Database        │
-        │   (GPT-4)        │  │  (Postgres)      │
-        └──────────────────┘  └──────────────────┘
+                              │ HTTPS
+                              ▼
+                  ┌──────────────────────┐
+                  │    OpenAI API        │
+                  │  (GPT-3.5-turbo)     │
+                  └──────────────────────┘
+
+Note: No database, no persistence, no authentication in MVP
 ```
 
 ---
 
 ## Data Models
 
-### UserStory
+### UserStory (Client-side only)
 ```typescript
 interface UserStory {
-  id: string;
   role: string;              // "As a [role]"
   goal: string;              // "I want [goal]"
   benefit: string;           // "So that [benefit]"
   acceptanceCriteria: AcceptanceCriterion[];
-  investScore?: InvestScore; // Optional quality metrics
-  createdAt: Date;
-  updatedAt: Date;
+  investScore: InvestScore;  // Quality metrics
 }
 
 interface AcceptanceCriterion {
@@ -153,9 +171,6 @@ interface GenerateStoryRequest {
   }
 }
 ```
-
-### POST `/api/save-story` (Optional for MVP)
-**Purpose**: Save generated story to database
 
 ---
 
@@ -274,28 +289,26 @@ app/
 ✅ Copy to clipboard functionality  
 ✅ Export as Markdown  
 
-### Phase 2 (Future)
-- Save stories to database
+### Future Enhancements
+See `future-enhancements.md` for:
+- Database integration and story persistence
 - User authentication
-- Story history
+- Story history and editing
 - Batch generation
 - Custom templates
-- Team collaboration
+- Team collaboration features
 
 ---
 
-## Environment Variables
+## Environment Variables (MVP)
 
 ```env
-# OpenAI
+# Required
 OPENAI_API_KEY=sk-...
 
-# Database (optional for MVP)
-DATABASE_URL=postgresql://...
-
-# NextAuth (optional for MVP)
-NEXTAUTH_SECRET=...
-NEXTAUTH_URL=https://...
+# Optional - Rate Limiting
+RATE_LIMIT_MAX_REQUESTS=10
+RATE_LIMIT_WINDOW_MS=60000
 ```
 
 ---
