@@ -23,15 +23,15 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       {/* Hero Section */}
       <section className="container py-12 md:py-20">
         <div className="mx-auto max-w-3xl text-center space-y-4">
-          <h1 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100 sm:text-5xl md:text-6xl">
+          <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl md:text-6xl">
             Generate High-Quality{' '}
-            <span className="text-blue-600 dark:text-blue-400">User Stories</span>
+            <span className="text-blue-600">User Stories</span>
           </h1>
-          <p className="text-lg text-slate-600 dark:text-slate-400 md:text-xl">
+          <p className="text-lg text-slate-600 md:text-xl">
             Transform your ideas into well-structured user stories.
             No sign-up required.
           </p>
@@ -59,12 +59,12 @@ export default function Home() {
       )}
 
       {/* Footer */}
-      <footer className="border-t bg-slate-50/50 dark:bg-slate-950/50 backdrop-blur-sm py-8 mt-20">
-        <div className="container text-center text-sm text-slate-600 dark:text-slate-400">
+      <footer className="border-t border-slate-200 bg-white/50 backdrop-blur-sm py-8 mt-20">
+        <div className="container text-center text-sm text-slate-600">
           <p>
             Built with ♥️ using Next.js, React, and OpenAI
           </p>
-          <p className="mt-2 text-xs text-slate-500 dark:text-slate-500">
+          <p className="mt-2 text-xs text-slate-500">
             Just clean, excellent user stories. No prioritization. No filtering. No roadmapping.
           </p>
         </div>
