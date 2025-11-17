@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Copy, Download, Check, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { UserStory } from '@/types/story';
-import { formatStoryAsMarkdown, copyToClipboard, downloadMarkdown } from '@/lib/export-utils';
+import { formatStoryAsPlainText, formatStoryAsMarkdown, copyToClipboard, downloadMarkdown } from '@/lib/export-utils';
 import { toast } from 'sonner';
 
 interface ExportButtonsProps {
@@ -16,8 +16,8 @@ export function ExportButtons({ story, onGenerateAnother }: ExportButtonsProps) 
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
-    const markdown = formatStoryAsMarkdown(story);
-    const success = await copyToClipboard(markdown);
+    const plainText = formatStoryAsPlainText(story);
+    const success = await copyToClipboard(plainText);
     
     if (success) {
       setCopied(true);
