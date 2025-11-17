@@ -7,7 +7,7 @@ export function Header() {
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
           <FileText className="h-6 w-6 text-slate-900" />
-          <span className="text-xl font-bold text-slate-900">User Stories AI</span>
+          <span className="text-xl font-bold text-slate-900">User Story Spark</span>
         </div>
         
         <nav className="flex items-center gap-4">

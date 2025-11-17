@@ -1,4 +1,4 @@
-# User Stories AI
+# User Story Spark
 
 Generate high-quality, well-structured user stories following INVEST best practices. Powered by AI.
 
