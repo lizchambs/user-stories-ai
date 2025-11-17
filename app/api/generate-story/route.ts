@@ -14,6 +14,13 @@ export async function POST(request: NextRequest) {
 
     // Create the user prompt
     const userPrompt = createUserPrompt(userInput, role, context, criteriaFormat);
+    
+    console.log('=== API REQUEST ===');
+    console.log('User Input:', userInput);
+    console.log('Role:', role);
+    console.log('Context:', context);
+    console.log('Criteria Format:', criteriaFormat);
+    console.log('User Prompt:', userPrompt);
 
     // Call OpenAI API
     const completion = await openai.chat.completions.create({
@@ -30,6 +37,9 @@ export async function POST(request: NextRequest) {
     // Extract and parse the response
     const responseContent = completion.choices[0]?.message?.content;
     
+    console.log('=== OPENAI RAW RESPONSE ===');
+    console.log(responseContent);
+    
     if (!responseContent) {
       throw new Error('No response from OpenAI');
     }
@@ -37,8 +47,14 @@ export async function POST(request: NextRequest) {
     // Parse the JSON response
     const parsedStory = JSON.parse(responseContent);
     
+    console.log('=== PARSED STORY ===');
+    console.log(JSON.stringify(parsedStory, null, 2));
+    
     // Validate the story structure
     const validatedStory = userStorySchema.parse(parsedStory);
+    
+    console.log('=== VALIDATED STORY (sent to frontend) ===');
+    console.log(JSON.stringify(validatedStory, null, 2));
 
     // Return success response
     const response: GenerateStoryResponse = {

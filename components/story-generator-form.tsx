@@ -29,7 +29,7 @@ export function StoryGeneratorForm({ onStoryGenerated }: StoryGeneratorFormProps
   } = useForm<GenerateStoryInput>({
     resolver: zodResolver(generateStorySchema),
     defaultValues: {
-      criteriaFormat: 'given-when-then',
+      criteriaFormat: 'bullet',
     },
   });
 
