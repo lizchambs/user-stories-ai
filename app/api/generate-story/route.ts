@@ -3,9 +3,29 @@ import { openai, DEFAULT_MODEL, DEFAULT_TEMPERATURE, DEFAULT_MAX_TOKENS } from '
 import { SYSTEM_PROMPT, createUserPrompt } from '@/lib/prompts';
 import { generateStorySchema, userStorySchema } from '@/lib/validators';
 import { GenerateStoryResponse } from '@/types/story';
+import { ratelimit } from '@/lib/rate-limit';
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting
+    const ip = request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip') ?? 'anonymous';
+    const { success: rateLimitSuccess, remaining } = await ratelimit.check(ip);
+    
+    if (!rateLimitSuccess) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Too many requests. Please try again in a minute.',
+        } as GenerateStoryResponse,
+        { 
+          status: 429,
+          headers: {
+            'X-RateLimit-Remaining': remaining.toString(),
+          }
+        }
+      );
+    }
+
     // Parse and validate request body
     const body = await request.json();
     const validatedInput = generateStorySchema.parse(body);
@@ -14,13 +34,6 @@ export async function POST(request: NextRequest) {
 
     // Create the user prompt
     const userPrompt = createUserPrompt(userInput, role, context, criteriaFormat);
-    
-    console.log('=== API REQUEST ===');
-    console.log('User Input:', userInput);
-    console.log('Role:', role);
-    console.log('Context:', context);
-    console.log('Criteria Format:', criteriaFormat);
-    console.log('User Prompt:', userPrompt);
 
     // Call OpenAI API
     const completion = await openai.chat.completions.create({
@@ -37,9 +50,6 @@ export async function POST(request: NextRequest) {
     // Extract and parse the response
     const responseContent = completion.choices[0]?.message?.content;
     
-    console.log('=== OPENAI RAW RESPONSE ===');
-    console.log(responseContent);
-    
     if (!responseContent) {
       throw new Error('No response from OpenAI');
     }
@@ -47,14 +57,8 @@ export async function POST(request: NextRequest) {
     // Parse the JSON response
     const parsedStory = JSON.parse(responseContent);
     
-    console.log('=== PARSED STORY ===');
-    console.log(JSON.stringify(parsedStory, null, 2));
-    
     // Validate the story structure
     const validatedStory = userStorySchema.parse(parsedStory);
-    
-    console.log('=== VALIDATED STORY (sent to frontend) ===');
-    console.log(JSON.stringify(validatedStory, null, 2));
 
     // Return success response
     const response: GenerateStoryResponse = {
@@ -62,7 +66,11 @@ export async function POST(request: NextRequest) {
       story: validatedStory,
     };
 
-    return NextResponse.json(response);
+    return NextResponse.json(response, {
+      headers: {
+        'X-RateLimit-Remaining': remaining.toString(),
+      }
+    });
 
   } catch (error) {
     console.error('Error generating story:', error);
