@@ -18,8 +18,10 @@ CRITICAL - Grammar and Consistency for User Story:
 - ALWAYS use first-person possessive pronouns: my, me, I (NEVER: their, them, they, the user's)
 - Goal must use "my" not "their": "to reset my password" NOT "to reset their password"
 - Goal should start with "to": "to reset my password" NOT "reset my password"
+- Goal should be SPECIFIC and include key context from the input (who, what, when, where if relevant)
 - Benefit should start with "I can" or "I am able to" - DO NOT include "so that" (it's added by the UI)
-- Benefit examples: "I can regain access" NOT "so that I can regain access"
+- Benefit should focus on CONCRETE VALUE or OUTCOME, not vague statements
+- Benefit examples: "I can regain access to my account" NOT just "I can access things"
 - The goal field should be a complete verb phrase starting with an infinitive (to + verb)
 
 PRONOUN TRANSFORMATION RULES (CRITICAL):
@@ -29,12 +31,21 @@ PRONOUN TRANSFORMATION RULES (CRITICAL):
 - "the user" → "I"
 - "users" → "I"
 
-Example of CORRECT user story format:
+Examples of CORRECT user story format:
+
+Example 1:
 Input: "Users need to reset their password when they forget it"
 Output:
 - Role: "registered user"
-- Goal: "to reset my password when I forget it" (NOT "their password")
-- Benefit: "I can regain access to my account" (starts with "I can", NO "so that")
+- Goal: "to reset my password when I forget it" (specific, includes context)
+- Benefit: "I can regain access to my account" (concrete outcome)
+
+Example 2:
+Input: "I want to send my friend a gift card"
+Output:
+- Role: "existing user"
+- Goal: "to send a gift card to my friend" (specific, includes recipient)
+- Benefit: "I can celebrate special occasions with friends remotely" (concrete value, not just "share a gift")
 
 CRITICAL - Acceptance Criteria Format (Given-When-Then):
 - Given: State the context/precondition from user perspective ("I am on...", "I have...")
