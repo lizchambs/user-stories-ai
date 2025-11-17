@@ -32,7 +32,7 @@ export default function Home() {
             <span className="text-blue-600">User Stories</span>
           </h1>
           <p className="text-lg text-slate-600 md:text-xl">
-            Transform your ideas into well-structured user stories following INVEST best practices.
+            Transform your ideas into well-structured user stories.
             No sign-up required.
           </p>
         </div>
@@ -59,10 +59,10 @@ export default function Home() {
       )}
 
       {/* Footer */}
-      <footer className="border-t bg-slate-50 py-8 mt-20">
+      <footer className="border-t border-slate-200 bg-white/50 backdrop-blur-sm py-8 mt-20">
         <div className="container text-center text-sm text-slate-600">
           <p>
-            Built with ❤️ using Next.js, React, and OpenAI
+            Built with ♥️ using Next.js, React, and OpenAI
           </p>
           <p className="mt-2 text-xs text-slate-500">
             Just clean, excellent user stories. No prioritization. No filtering. No roadmapping.

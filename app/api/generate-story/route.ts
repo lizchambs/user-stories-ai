@@ -3,9 +3,29 @@ import { openai, DEFAULT_MODEL, DEFAULT_TEMPERATURE, DEFAULT_MAX_TOKENS } from '
 import { SYSTEM_PROMPT, createUserPrompt } from '@/lib/prompts';
 import { generateStorySchema, userStorySchema } from '@/lib/validators';
 import { GenerateStoryResponse } from '@/types/story';
+import { ratelimit } from '@/lib/rate-limit';
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting
+    const ip = request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip') ?? 'anonymous';
+    const { success: rateLimitSuccess, remaining } = await ratelimit.check(ip);
+    
+    if (!rateLimitSuccess) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Too many requests. Please try again in a minute.',
+        } as GenerateStoryResponse,
+        { 
+          status: 429,
+          headers: {
+            'X-RateLimit-Remaining': remaining.toString(),
+          }
+        }
+      );
+    }
+
     // Parse and validate request body
     const body = await request.json();
     const validatedInput = generateStorySchema.parse(body);
@@ -46,7 +66,11 @@ export async function POST(request: NextRequest) {
       story: validatedStory,
     };
 
-    return NextResponse.json(response);
+    return NextResponse.json(response, {
+      headers: {
+        'X-RateLimit-Remaining': remaining.toString(),
+      }
+    });
 
   } catch (error) {
     console.error('Error generating story:', error);

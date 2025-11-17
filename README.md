@@ -1,11 +1,10 @@
-# User Stories AI
+# User Story Spark
 
-Generate high-quality, well-structured user stories following INVEST best practices. Powered by AI.
+Generate high-quality, well-structured user stories. Powered by AI.
 
 ## 🎯 Features
 
 - ✅ **AI-Powered Generation** - Transform ideas into structured user stories
-- ✅ **INVEST Compliance** - Automatic evaluation against INVEST criteria
 - ✅ **Acceptance Criteria** - Auto-generated in Given-When-Then or bullet format
 - ✅ **Export Options** - Copy to clipboard or download as Markdown
 - ✅ **Zero Friction** - No sign-up, no database, instant results

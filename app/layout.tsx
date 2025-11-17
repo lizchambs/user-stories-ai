@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "User Stories AI - Generate High-Quality User Stories",
+  title: "User Story Spark - Generate High-Quality User Stories",
   description: "Transform your ideas into well-structured user stories following INVEST best practices. Powered by AI.",
 };
 
