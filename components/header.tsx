@@ -12,7 +12,7 @@ export function Header() {
         
         <nav className="flex items-center gap-2">
           <Link
-            href="https://github.com"
+            href="https://github.com/lizchambs"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
