@@ -23,7 +23,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900">
+    <div className="min-h-screen">
       {/* Hero Section */}
       <section className="container py-12 md:py-20">
         <div className="mx-auto max-w-3xl text-center space-y-4">
@@ -59,7 +59,7 @@ export default function Home() {
       )}
 
       {/* Footer */}
-      <footer className="border-t bg-slate-50 dark:bg-slate-950 py-8 mt-20">
+      <footer className="border-t bg-slate-50/50 dark:bg-slate-950/50 backdrop-blur-sm py-8 mt-20">
         <div className="container text-center text-sm text-slate-600 dark:text-slate-400">
           <p>
             Built with ♥️ using Next.js, React, and OpenAI
