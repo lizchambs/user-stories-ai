@@ -69,7 +69,7 @@ export function StoryGeneratorForm({ onStoryGenerated }: StoryGeneratorFormProps
           Generate User Story
         </CardTitle>
         <CardDescription>
-          Describe the feature or need, and we'll create a well-structured user story following INVEST best practices.
+          Describe the feature or need, and we'll create a well-structured user story.
         </CardDescription>
       </CardHeader>
       <CardContent>
