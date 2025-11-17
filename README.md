@@ -86,20 +86,20 @@ user-stories-ai/
 - **Styling**: Tailwind CSS 4
 - **UI Components**: shadcn/ui
 - **Form Handling**: React Hook Form + Zod
-- **AI**: OpenAI API (GPT-3.5-turbo)
+- **AI**: OpenAI API (GPT-4o-mini)
 - **Icons**: Lucide React
 - **Notifications**: Sonner
 
 ## 📖 Usage
 
-1. **Enter your feature description** in the main textarea
+1. **Enter your feature description** in the main text area
 2. **(Optional)** Expand optional fields to specify:
    - User role (e.g., "customer", "admin")
    - Context (e.g., "E-commerce platform")
    - Acceptance criteria format preference
 3. **Click "Generate Story"** and wait 2-5 seconds
 4. **Review the generated story** with INVEST indicators
-5. **Export** by copying to clipboard or downloading as Markdown
+5. **Export** by copying to clipboard or downloading Markdown format
 
 ## 🔧 Configuration
 
@@ -114,7 +114,7 @@ user-stories-ai/
 ### AI Model Configuration
 
 Edit `lib/openai.ts` to change:
-- Model (default: `gpt-3.5-turbo`)
+- Model (default: `gpt-4o-mini`)
 - Temperature (default: `0.7`)
 - Max tokens (default: `1000`)
 
@@ -136,7 +136,7 @@ npm run start
 
 ## 💰 Cost Estimation
 
-Using GPT-3.5-turbo:
+Using GPT-4o-mini:
 - ~$0.001 per story generation
 - 1000 stories ≈ $1
 - Free tier includes $5 credit
@@ -167,7 +167,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📄 License
 
-MIT License - see LICENSE file for details
+See LICENSE file for details
 
 ## 🙏 Acknowledgments
 
